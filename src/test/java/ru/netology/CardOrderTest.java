@@ -9,6 +9,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CardOrderTest {
@@ -47,6 +49,17 @@ public class CardOrderTest {
         String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    void negativePathTest1() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Dolgov David");
+        driver.findElement(By.tagName("button")).click();
+        List<WebElement> elements = driver.findElements(By.cssSelector("[data-test-id=name] span"));
+        String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
+        String actual = elements.get(3).getText().trim();
+        assertEquals(expected, actual);
     }
 
 }
